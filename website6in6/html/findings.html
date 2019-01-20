@@ -43,8 +43,127 @@
 			<h2>Findings</h2>
 		</div>
 			
-		<p>report going here</p>
-	</div>
+	
+<h2>The Canadian Landscape For Data Analytics Careers, January 2019</h2>
+
+<h4>Methods</h4>
+
+<p>Using the ETL processes, the following tasks were done:</p>
+<ul>
+    <li>Extraction of the Data Analytics positions and salaries from job search websites</li>
+    <li>Extraction of the Cost of Living information for Canadian cities from Numbeo website</li>
+    <li>Extraction of the population information for Canadian locations from Statistics Canada website</li>
+    <li>Transformation of the Data Analytics positions data focusing on locations and salary into a dataframe</li>
+    <li>Amalgamation and transformation of the Cost of Living and population data into a dataframe based on Canadian Locations and their provinces/territories.</li>
+    <li>Transformation Cost of Living and population dataframe to produce a dataframe of aggregated data for each province/territory.</li>
+    <li>The Load of all dataframes into a SQL database</li>
+    <li>The use of matplotlib for visualization of the relationship between Data Analytics open positions, their locations, and their related cost of living and population information, through database queries</li>
+</ul>
+<p>The methods are described in greater detail below:</p>
+
+
+
+
+   
+<h4>Extraction &amp; Transformation of Data Analytics Jobs, and Salaries</h4>
+
+<p>The salaries for data analytics jobs were obtained by scraping the website indeed.ca/salaries. A loop was constructed to query the website by modifying the url itself, and if a results table was detected, the loop would then scrape all available data from the table using beautiful soup, and continue to the next page of results as long as a &lt;span&gt; tag with a class (&ldquo;cmp-pagination-link&rdquo;) existed. Once results were gathered for all three data science jobs in all provinces, the loop ended and the results were parsed into separate lists for province, job id, job title, salary and a salary classifier (per month, per year etc.). The lists were then used to create a temporary dataframe, which adjusted the salary column to ensure all rows yielded a &lsquo;per/year&rsquo; value. The final dataframe then dropped the classifier column, and was exported for loading subsequent analyses.</p>
+
+<h4>Extraction &amp; Transformation of Location Data</h4>
+
+<p>The final scenario used for the official test consisted of 10 vusers of script ALCR2 and 10 vusers of script ALCR3, ramping in at a rate of 1 vuser every 30 seconds, with a steady state of 30 minutes, and</p>
+
+<h4>Extraction &amp; Transformation of Cost of Living Data from Numbeo</h4>
+<h4>Extraction &amp; Transformation of Popuation Data from Stats Canada</h4>
+<h4>Merging of Cost of Living Population Data based on Canadian Location</h4>
+<h4>Aggregation of Cost of Living &amp; Population Data Based on Provinces</h4>
+
+
+<h4>FINAL Transformation AND Loading of data to sql database</h4>
+<p>Before loading data into SQL, the extracted inputs needed to be transformed relative to each other to ensure clean data is loaded. The file used to do the final transformation and load into SQL is &lsquo;Transform_IntoSQL.jpynb&rsquo;.</p>
+<p>The extracted inputs to this file are as follows:</p>
+<ul>
+    <li>ca scrape for salaries of Data Analyst, Data Scientist, Data Engineer by province in csv form (Salary_extracted_input.csv).</li>
+    <li>ca scrape for job postings for Data Analyst, Data Engineer, Data Scientist positions in Canada is csv form (Job_Posting_extracted_input.csv)</li>
+    <li>Canadian city information from Stats Canada API and Numbeo API in csv form (complete_city_df.csv)</li>
+    <li>Canadian province information from Stats Canada API and Numbeo API in csv form (province_df.csv)</li>
+</ul>
+<p>The purpose of this section of the project is to create 5 clean tables that are interlinked and loaded onto MySQL. The 5 tables are: Job_Class, Jobs, Cities, Provinces, Salaries.</p>
+<ul>
+    <li>Job_Class Table</li>
+</ul>
+<p>The job_Class table was a manually made dataframe to assign a Class_ID (eventually will act as primary key in SQL) to Data Analyst, Data Engineer, and Data Scientist. We included an Other job_Class because the job posting scrap yielded job titles other than Data Analyst, Data Engineer, and Data Scientist, and we did not want to discard them as they had &lsquo;Data&rsquo; in the job title.</p>
+<ul>
+    <li>Provinces Table</li>
+</ul>
+<p>The base of the provinces table was made from a pd.read_html scrape of the Wikipedia page for Canadian provinces. It was merged with the province_df.csv on the province abbreviation. Each province was given a province_ID that will act as a primary key in SQL. &lsquo;Other&rsquo; was also included in the provinces table because some of the cities yielded from the job postings scrape of indeed.ca could not be matched to city on the city table and therefore could not be matched to a province.</p>
+<ul>
+    <li>Salaries Table</li>
+</ul>
+<p>The salaries table needed to be merged with the job_Class Table and Province Table. Prior to the merges, the provinces column of the raw salaries table (from the Salary_extracted_input.csv) needed to be match the provinces column of the provinces table in terms of string. The python library &lsquo;fuzzy wuzzy&rsquo; (string matching library) was used to accomplish this.</p>
+<ul>
+    <li>Cities Table</li>
+</ul>
+<p>The raw city table (from complete_city_df.csv) needed to be merged with the provinces table. Prior to merging, an &lsquo;Other&rsquo; city needed to be created with &lsquo;Other&rsquo; as the province because the jobs table included cities that are not in the city table that will be categories under &lsquo;Other&rsquo;. A unique city_ID is assigned to all the cities in the city table (to act as the primary key in SQL).</p>
+<ul>
+    <li>Jobs Table</li>
+</ul>
+<p>The raw data of the jobs table (Job_Posting_extracted_input.csv) included columns city, company, job title, province, and summary. This table needed to be merged with the job_class table, provinces table, and city table. Prior to the merges, several steps had to be performed to ensure clean merges:</p>
+<ul>
+    <li>Python library unidecode was used on the city column to remove any accents from the French cities (as the city table did not include city names with accents).</li>
+    <li>A list of cities that were in the jobs table but not in the city table were generated. The python library &lsquo;fuzzy wuzzy&rsquo; with a score cutoff (80) was used to determine any semantic differences (e.g. Toronto vs. Greater Toronto Area, St. Catherines vs. St. Catharines, Saanich vs. North Saanich). Cities in the jobs table identified to have minor semantic differences to cities in the cities table were changed. All remaining cities in the jobs table that were not in the cities table were categoried under &lsquo;Other&rsquo;.</li>
+    <li>The provinces in the jobs table were also corrected with fuzzy wuzzy as mentioned before.</li>
+</ul>
+
+<ul>
+    <li>Load onto SQL</li>
+</ul>
+<p>The final dataframes for the job_Class, provinces, cities, salaries, and jobs were loaded onto SQL through python by creating an engine and using the pd.to_sql method. Primary keys were set using the engine.execute method where the SQL query 'ALTER TABLE `table name` ADD PRIMARY KEY (`column name`);' was called.</p>
+
+<ul>
+    <li>FINAL database</li>
+</ul>
+<p>Figure 1 below shows the final database loaded into MySQL. The black lines denote the connections between the tables (i.e. similar to foreign keys).</p>
+
+<div>
+	<img src="../images/tablesPic.png" alt="" style="max-width:750px">
+</div>
+
+
+<h4>Findings</h4>
+
+<p>The following data relationships were explored:</p>
+<ul>
+    <li>The Distribution of Data Analytics Jobs Across Canada</li>
+    <li>The Comparison of Data Analytics Average Salaries Across Canada</li>
+    <li>The Top 5 Cities with the most Data Analytics Job Opportunites</li>
+    <li>The Top 5 Cities with the most Earning Power for Data Analytics Jobs</li>
+</ul>
+<p>Visualization of these relationships will show the locations in Canada where people desiring a Data Analytics career will have the best opportunities to not only find a job, but to have a higher quality of life.</p>
+<h4>Job DistriBution Across Canada</h4>
+<p>Ontario, Quebec, and British Columbia (BC) appear to have the highest variety of data science jobs available in the country. In fact, three of these provinces account for &asymp; 90% of the data science jobs in the country. However, when adjusted for population, an interesting pattern emerges. Ontario and BC have nearly the same amount of data science jobs per 100,000 people, while Quebec falls quite a bit shorter. This may suggest that competition in Quebec will be considerably higher than in Ontario and BC.&nbsp;</p>
+<p>Interestingly, Alberta, PEI and Sasketchwan all have data science opportunities that are in line with Ontario and BC, however given their slightly higher cost of living index, the salary attained in these provinces should be considerably higher in order to convince an individual to forego pursuing opportunities in Ontario, BC, and Quebec, where the cost of living index is quite a bit lower, presumably because these provinces tend to pay higher salaries than the national average. However, it should be noted that PEI has one of the highest quality of life scores across the country, making it a very viable option</p>
+
+<h4>Average Salaries Across Canada</h4>
+<h4>Locations with most opporutnities</h4>
+<h4>Locations with most earning power</h4>
+<h4>Conclusions</h4>
+<h4>Discussion</h4>
+
+<p>The following are items and issues that were encountered during this project, and should be further discussed to provide insight on the observations and conclusions.</p>
+
+<h4>Issues with Job data</h4>
+<h4>Incompleteness of Numbeo Data</h4>
+<h4>Issues regarding correlating data from different sources</h4>
+
+<h4>Appendix A: Script Execution Plan</h4>
+<p>The following are the script designs of the three scripts used in the performance testing.&nbsp; This provides a clear understanding of the steps used when recording the script, the data selected during recording, the variable names used, data preparation instructions, and the LoadRunner transaction names and the functional steps they comprise.</p>
+<p>The first script could not be recorded as a LoadRunner script, but the script design document provided clear instructions on how to manually execute the functionality.</p>
+
+<h4>Appendix B: Repository Folder Structure</h4>
+<h4>Appendix C: sql db model</h4>
+<p>The following is the SQL Data Model used in this project:</p>
+
 
 
 	<div class="footer">
