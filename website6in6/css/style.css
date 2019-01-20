@@ -67,7 +67,7 @@ nav {
 	color: red;
 	text-shadow:1px 1px 1px rgba(0,0,0,.5) !important;
 }
-.home{
+.homeContent{
 	margin-top:50px;
 }
 @media(max-width: 500px){
@@ -77,4 +77,10 @@ nav {
 }
 .imgWrap{
 	margin-bottom: 15px;
+}
+.potentialTables table, .potentialTables td, .potentialTables tr {
+	border:solid 1px;
+}
+table{
+	margin-bottom:15px;
 }
