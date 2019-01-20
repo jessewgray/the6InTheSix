@@ -42,12 +42,213 @@
 		<div class="pageTitle">
 			<h2>Proposal</h2>
 		</div>
-		<p>who has the proposal? we can add it here</p>
+		<div>
+			<h4> UofT SCS Data Analytics Team 6 Members</h4>
+			<p>Sara Hovakeemian, Laurel Lobo, Jose Tomines, Jesse Gray</p>
+			<h4>Project Scope</h4>
+			<p>Analyze the distribution of Data Analytics positions (Data Analyst, Data Scientist, Data Engineer) in Canada by scraping Indeed. We will scrap Glassdoor to get salaries for these positions by position. We will also explore whether these positions are in cities/provinces that are appealing (cost of living) using the Numbeo API.</p>
+			<h4>Breakdown of Questions</h4>
+			<ol>
+			    <li>How many positions are there per city/province</li>
+			    <li>What is the comparison between salary and cost of living</li>
+			</ol>
+			<h4>Potential Data Sources</h4>
+			<ol>
+			    <li>Indeed</li>
+			    <li>Glassdoor</li>
+			    <li>Numbeo API</li>
+			    <li>Stats Canada API</li>
+			</ol>
+		</div>
+	
 
-		<p>This is the repository for the team the6InTheSix that will be exploring the relationship between Data Analytics job postings in Indeed & GlassDoor with the standard of living metrics for the locations of the jobs.</p>
+<div class="potentialTables">
+	<h4>Potential Data Tables</h4>
+	<table width="301">
+	    <tbody>
+	        <tr>
+	            <td width="170">
+	                <p>Job Classification ID (pk)</p>
+	            </td>
+	            <td width="132">
+	                <p>Job Title</p>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td width="170">
+	                <p>1</p>
+	            </td>
+	            <td width="132">
+	                <p>Data Analyst</p>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td width="170">
+	                <p>2</p>
+	            </td>
+	            <td width="132">
+	                <p>Data Engineer</p>
+	            </td>
+	        </tr>
+	        <tr>
+	            <td width="170">
+	                <p>3</p>
+	            </td>
+	            <td width="132">
+	                <p>Data Scientist</p>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
 
-		<p>The following is the subfolders and their contents: 0_Reference: This will include any reference documents including the original project proposal & this Standards proposal, and any pictures and images (non generated) we may want to include in our Final Report 1_Input: This will hold input csv files that the code will use 2_InterimCode: This will hold our code as we work on it. 3_Output: This will hold the output files such as generated graphs 4_DB: Database location 5_InterimReport: This will be any reports as they are being worked on, including earlier versions 6_FinalCode: This will be the final code copied from 2_InterimCode, with the correct filename that states the order to execute 7_FinalReport: The final report that will be submitted.</p>
-	</div>
+	<table width="642">
+	    <tbody>
+	        <tr>
+	            <td width="151">
+	                <p>Posting ID (pk)</p>
+	            </td>
+	            <td width="151">
+	                <p>Job Classification ID (fk)</p>
+	            </td>
+	            <td width="64">
+	                <p>Title</p>
+	            </td>
+	            <td width="64">
+	                <p>City ID (fk)</p>
+	            </td>
+	            <td width="112">
+	                <p>Province ID</p>
+	            </td>
+	            <td width="101">
+	                <p>Source ID (fk)</p>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+
+	<table width="538">
+	    <tbody>
+	        <tr>
+	            <td width="123">
+	                <p>Province ID (pk)</p>
+	            </td>
+	            <td width="95">
+	                <p>Province</p>
+	            </td>
+	            <td width="121">
+	                <p>Cost of Living</p>
+	            </td>
+	            <td width="79">
+	                <p>Population</p>
+	            </td>
+	            <td width="121">
+	                <p>Source ID (fk)</p>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+
+	<table width="671">
+	    <tbody>
+	        <tr>
+	            <td width="85">
+	                <p>City ID (pk)</p>
+	            </td>
+	            <td width="43">
+	                <p>City</p>
+	            </td>
+	            <td width="89">
+	                <p>Province ID (fk)</p>
+	            </td>
+	            <td width="79">
+	                <p>Population</p>
+	            </td>
+	            <td width="104">
+	                <p>Cost of Living</p>
+	            </td>
+	            <td width="170">
+	                <p>Average Housing Cost</p>
+	            </td>
+	            <td width="100">
+	                <p>Source ID (fk)</p>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+
+	<table width="595">
+	    <tbody>
+	        <tr>
+	            <td width="104">
+	                <p>Salary ID (pk)</p>
+	            </td>
+	            <td width="142">
+	                <p>Job Classification ID (fk)</p>
+	            </td>
+	            <td width="123">
+	                <p>GlassDoor Salary</p>
+	            </td>
+	            <td width="94">
+	                <p>Province ID (fk)</p>
+	            </td>
+	            <td width="132">
+	                <p>Source ID (fk)</p>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+
+	<table width="301">
+	    <tbody>
+	        <tr>
+	            <td width="151">
+	                <p>Source ID (pk)</p>
+	            </td>
+	            <td width="151">
+	                <p>Source</p>
+	            </td>
+	        </tr>
+	    </tbody>
+	</table>
+	<ul>
+		<li>fk denotes foreign key</li>
+		<li>pk denotes primary key</li>
+	</ul>
+</div>
+
+<div>
+
+	<h4>Breakdown of Tasks</h4>
+	<p>Laurel:</p>
+	<ul>
+	    <li>Scrape Data Analyst, Data Engineer, Data Scientist salaries for 6 provinces to create the Salary Table</li>
+	    <li>SQL queries of final SQL database to extract information for analytics and plotting.</li>
+	    <li>Create plots</li>
+	</ul>
+	<p>Sara:</p>
+	<ul>
+		<li>Create proposal overview</li>
+	    <li>Scrape Data Analyst, Data Engineer, Data Scientist salaries for 6 provinces to create the Salary Table.</li>
+	    <li>Cleaning all raw extracted data to get 6 final tables ready for loading onto SQL</li>
+	    <li>Load to SQL</li>
+	    <li>Create report on the process of extracting, munging, and cleaning data</li>
+	</ul>
+	<p>Jesse:</p>
+	<ul>
+	    <li>Scrape Indeed for Data Analyst, Data Engineer, Data Scientist positions for Canada and extract Title, Company, Salary (if applicable), City, Province</li>
+	    <li>Load to SQL</li>
+	    <li>Create website to show proposal, report, plots, and data</li>
+	</ul>
+	<p>Jose:</p>
+	<ul>
+		<li>Create proposal overview</li>
+	    <li>Use stats Canada and Numbeo API to find information such as population, cost of living, etc. to create the City and Province Table</li>
+	    <li>Final Report to summarize all finding</li>
+	</ul>
+</div>
+
+		
+	</div> <!-- container end -->
 
 
 
